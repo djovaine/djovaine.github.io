@@ -2,65 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>I LOVE YOU</title>
+  <title>Logo Taurus Animasi</title>
   <style>
     body {
-      background: #fff;
       margin: 0;
-      height: 100vh;
+      background: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
       flex-direction: column;
-      font-family: sans-serif;
     }
     canvas {
-      border: 1px solid #ccc;
-      background: #fff;
+      border: 1px solid #ddd;
+      background: #f9f9f9;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
     }
     .caption {
       margin-top: 15px;
-      font-size: 1.1em;
-      color: #555;
+      font-size: 1.2em;
+      color: #333;
     }
   </style>
 </head>
 <body>
   <canvas id="canvas" width="400" height="400"></canvas>
-  <div class="caption">Pola bunga dengan bentuk Taurus ♉️</div>
+  <div class="caption">Logo Taurus Animasi ♉️</div>
 
   <script>
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
 
-    function drawTaurusShape() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.save();
-      ctx.translate(200, 200);
-      ctx.lineWidth = 4;
-      ctx.strokeStyle = '#277BC0';
+    function drawTaurus() {
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = '#2C3E50';
+      ctx.fillStyle = '#E67E22';
 
-      // Kepala U (badan banteng)
       ctx.beginPath();
-      ctx.moveTo(-80, 60);
-      ctx.quadraticCurveTo(0, -60, 80, 60);
+      // Kepala huruf U
+      ctx.moveTo(centerX - 80, centerY + 50);
+      ctx.quadraticCurveTo(centerX, centerY - 80, centerX + 80, centerY + 50);
       ctx.stroke();
 
       // Tanduk kiri
       ctx.beginPath();
-      ctx.moveTo(-80, 60);
-      ctx.bezierCurveTo(-130, 0, -110, -90, -40, -40);
+      ctx.moveTo(centerX - 80, centerY + 50);
+      ctx.bezierCurveTo(centerX - 130, centerY + 10, centerX - 120, centerY - 100, centerX - 40, centerY - 40);
       ctx.stroke();
 
       // Tanduk kanan
       ctx.beginPath();
-      ctx.moveTo(80, 60);
-      ctx.bezierCurveTo(130, 0, 110, -90, 40, -40);
+      ctx.moveTo(centerX + 80, centerY + 50);
+      ctx.bezierCurveTo(centerX + 130, centerY + 10, centerX + 120, centerY - 100, centerX + 40, centerY - 40);
       ctx.stroke();
 
-      // Mata kiri (lingkaran kecil)
+      // Mata kiri
       ctx.beginPath();
-      ctx.fillStyle = '#E38B29';
-      ctx.arc(-30, 20, 8, 0, Math.PI * 2);
-      ct
+      ctx.arc(centerX - 30, centerY + 20, 10, 0, Math.PI * 2);
+      ctx.fill();
 
+      // Mata kanan
+      ctx.beginPath();
+      ctx.arc(centerX + 30, centerY + 20, 10, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    let rotation = 0;
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.rotate(rotation);
+      ctx.translate(-centerX, -centerY);
+
+      drawTaurus();
+
+      ctx.restore();
+
+      rotation += 0.01; // kecepatan putar
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
