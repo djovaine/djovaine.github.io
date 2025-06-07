@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>I Love You Haeden</title>
+<title>I Love You Haedenn</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
 
@@ -235,14 +235,19 @@ function checkAnimationFrame() {
 
   // Coba play lagi setelah delay sedikit
   window.addEventListener("load", () => {
-    setTimeout(() => {
-      music.play().then(() => {
-        console.log("✅ Musik diputar otomatis");
-      }).catch(err => {
-        console.warn("❌ Autoplay gagal:", err);
-      });
-    }, 500);
+    music.volume = 0.5;
+    music.play().then(() => {
+      console.log("✅ Musik diputar otomatis!");
+    }).catch(err => {
+      console.warn("⛔ Autoplay gagal, user harus klik:", err);
+      showPlayButton();
+    });
   });
+
+      btn.addEventListener("click", () => {
+      music.play();
+    });
+  }
   
 </script>
 
