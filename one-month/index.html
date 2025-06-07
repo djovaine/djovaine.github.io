@@ -217,7 +217,7 @@
 function checkAnimationFrame() {
   const elapsed = (performance.now() - animationStartTime) % boxAnimationDuration;
 
-  const isPetalsClosed = (elapsed <= 3000 || elapsed >= 10000);
+  const isPetalsClosed = (elapsed <= 2000 || elapsed >= 10500);
 
   if (isPetalsClosed) {
     if (!happyMessage.classList.contains('visible')) {
