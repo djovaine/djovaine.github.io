@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>I Love You Haeden</title>
+<title>I Love You Haedenn</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
 
@@ -130,7 +130,7 @@
 </div>
 <div class="happy-message" id="happyMessage">Happy Mensive</div>
 
-<audio id="bgmusic" autoplay loop>
+<audio id="bgmusic" autoplay>
   <source src="song.mp3" type="audio/mpeg" />
 </audio>
 
@@ -217,7 +217,7 @@
 function checkAnimationFrame() {
   const elapsed = (performance.now() - animationStartTime) % boxAnimationDuration;
 
-  const isPetalsClosed = (elapsed <= 2500 || elapsed >= 10000);
+  const isPetalsClosed = (elapsed <= 3000 || elapsed >= 10000);
 
   if (isPetalsClosed) {
     if (!happyMessage.classList.contains('visible')) {
@@ -232,12 +232,12 @@ function checkAnimationFrame() {
   requestAnimationFrame(checkAnimationFrame);
 }
 
-  document.addEventListener('click', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const music = document.getElementById('bgmusic');
-    if (music.paused) {
-      music.play();
-    }
-  }, { once: true });
+    music.play().catch(error => {
+      console.log('Audio tidak dapat diputar otomatis:', error);
+    });
+  });
   
 </script>
 
