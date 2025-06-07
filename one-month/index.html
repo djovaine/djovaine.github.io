@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>I Love You Haedenn</title>
+<title>I Love You Haeden</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
 
@@ -130,8 +130,9 @@
 </div>
 <div class="happy-message" id="happyMessage">Happy Mensive</div>
 
-<audio autoplay loop>
-  <source src="song.mp3" type="audio/mpeg" />
+<!-- Menambahkan elemen audio dengan looping -->
+<audio controls loop>
+  <source src="song.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
@@ -215,23 +216,23 @@
     requestAnimationFrame(checkAnimationFrame);
   }
 
-function checkAnimationFrame() {
-  const elapsed = (performance.now() - animationStartTime) % boxAnimationDuration;
+  function checkAnimationFrame() {
+    const elapsed = (performance.now() - animationStartTime) % boxAnimationDuration;
 
-  const isPetalsClosed = (elapsed <= 2500 || elapsed >= 10000);
+    const isPetalsClosed = (elapsed <= 2500 || elapsed >= 10000);
 
-  if (isPetalsClosed) {
-    if (!happyMessage.classList.contains('visible')) {
-      happyMessage.classList.add('visible');
+    if (isPetalsClosed) {
+      if (!happyMessage.classList.contains('visible')) {
+        happyMessage.classList.add('visible');
+      }
+    } else {
+      if (happyMessage.classList.contains('visible')) {
+        happyMessage.classList.remove('visible');
+      }
     }
-  } else {
-    if (happyMessage.classList.contains('visible')) {
-      happyMessage.classList.remove('visible');
-    }
+
+    requestAnimationFrame(checkAnimationFrame);
   }
-
-  requestAnimationFrame(checkAnimationFrame);
-}
 
 </script>
 
