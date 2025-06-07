@@ -7,7 +7,7 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
 
-  /* ================= Jovaine ================== */
+  /* ================= With Love, Jovaine ================== */
   :root {
     --size: 10vmin;
     --grad-size: calc(var(--size) / 3);
@@ -143,8 +143,8 @@
   const huetStep = 150 / maxParts;
 
   const boxAnimationDuration = 12000; // 12s in ms
-  const closedStart = 0.50 * boxAnimationDuration; // 6000ms
-  const closedEnd = 0.80 * boxAnimationDuration;   // 9600ms
+  const closedStart = 0.50 * boxAnimationDuration; 
+  const closedEnd = 0.80 * boxAnimationDuration;
 
   let animationStartTime = null;
 
@@ -190,20 +190,16 @@
 
     const color = `hsl(${huetStep * pos}, 100%, ${bright}%)`;
 
-    // Create shape
     const newShape = doc.createElement('div');
     newShape.classList.add('shape');
 
-    // Create box wrapper
     const newBox = doc.createElement('div');
     newBox.classList.add('box');
     newBox.style.color = color;
     newBox.style.fontSize = fontSize;
 
-    // Append old box into new box
     if(box) newBox.appendChild(box);
 
-    // Append shape to new box
     newBox.appendChild(newShape);
 
     return newBox;
