@@ -59,6 +59,14 @@
       requestAnimationFrame(animate);
     }
 
+let layers = 5;
+    for (let i = 0; i < layers; i++) {
+      let scale = 1 - i * 0.15;
+      let petals = 6 + i * 2;
+      let color = i % 2 === 0 ? '#E38B29' : '#277BC0';
+      drawFlower(petals, color, 100, scale);
+    }
+    
     animate();
   </script>
 </body>
