@@ -17,7 +17,7 @@
     height: 100%;
     margin: 0;
     background: #000000;
-    font-family: 'Times New Roman';
+    font-family: 'Cardo';
     color: #ffffff;
     display: flex;
     justify-content: center;
@@ -142,7 +142,7 @@
   const partsFontStep = 25 / maxParts;
   const huetStep = 150 / maxParts;
 
-  const boxAnimationDuration = 12000; // 12s in ms
+  const boxAnimationDuration = 12000; 
   const closedStart = 0.50 * boxAnimationDuration; 
   const closedEnd = 0.80 * boxAnimationDuration;
 
@@ -213,7 +213,6 @@
 function checkAnimationFrame() {
   const elapsed = (performance.now() - animationStartTime) % boxAnimationDuration;
 
-  // Show text only when petals are closed (0–1.8s and 9.6–12s)
   const isPetalsClosed = (elapsed <= 2500 || elapsed >= 10000);
 
   if (isPetalsClosed) {
