@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>I Love You Haedenn</title>
+<title>I Love You Haeden</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
 
@@ -234,12 +234,12 @@ function checkAnimationFrame() {
   requestAnimationFrame(checkAnimationFrame);
 }
 
-  document.addEventListener('click', () => {
+  document.addEventListener('DOMContentLoaded', () => {
     const music = document.getElementById('bgmusic');
     music.play().catch(error => {
       console.log('Audio tidak dapat diputar otomatis:', error);
     });
-  }, { once: true });
+  });
   
 </script>
 
