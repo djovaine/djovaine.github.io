@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>3D Flower</title>
+<title>3D Flower with Happy Mensive</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
+
   /* ================= Jovaine ================== */
   :root {
     --size: 10vmin;
@@ -13,34 +15,25 @@
 
   html, body {
     height: 100%;
-    overflow: hidden;
     margin: 0;
-  }
-
-  body {
-    background: hsl(0, 0%, 4%);
-    background-image:
-      linear-gradient(hsl(0, 0%, 6%) 1px, transparent 1px),
-      linear-gradient(to right, hsl(0, 0%, 6%) 1px, transparent 1px);
-    background-size: var(--grad-size) var(--grad-size);
-    font-family: Arial, sans-serif;
-  }
-
-  .range {
-    /* display: none; */
-    position: absolute;
-    z-index: 2;
+    background: #000000; /* Set background to black */
+    font-family: 'Cardo', serif;
+    color: #ffffff; /* Set text color to white for visibility */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
   }
 
   .wrapper {
-    position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
-    margin: auto;
     width: var(--size);
     height: var(--size);
     font-size: var(--size);
     transform: rotateX(-45deg);
     transform-style: preserve-3d;
+    position: relative;
   }
 
   .flower {
@@ -59,7 +52,7 @@
     height: 95%;
     top: 0; right: 0; bottom: 0; left: 0;
     margin: auto;
-    background: hsl(100, 100%, 20%);
+    background: hsl(100, 40%, 60%);
     border-radius: 50%;
     transform: rotateX(90deg);
     animation: rotate-hue 5s infinite;
@@ -95,6 +88,19 @@
     animation: rotate-hue 5s infinite;
   }
 
+  .happy-message {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: #ffffff; /* White text for visibility on black background */
+    text-align: center;
+    user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .happy-message.visible {
+    opacity: 1;
+  }
+
   @keyframes rotate-box {
     0%   { transform: rotateX(3.5deg); }
     15%  { transform: rotateX(3.5deg); }
@@ -121,19 +127,28 @@
 <div class="wrapper">
   <div class="flower"></div>
 </div>
+<div class="happy-message" id="happyMessage">Happy Mensive</div>
 
 <script>
   console.clear();
 
   const doc = document;
   const flower = doc.querySelector('.flower');
+  const happyMessage = doc.getElementById('happyMessage');
 
   const maxParts = 20;
   const maxPetals = 6;
   const partsFontStep = 25 / maxParts;
   const huetStep = 150 / maxParts;
 
+  const boxAnimationDuration = 12000; // 12s in ms
+  const closedStart = 0.50 * boxAnimationDuration; // 6000ms
+  const closedEnd = 0.80 * boxAnimationDuration;   // 9600ms
+
+  let animationStartTime = null;
+
   createFlower();
+  startAnimationWatcher();
 
   function createFlower() {
     const angle = 360 / maxPetals;
@@ -192,6 +207,31 @@
 
     return newBox;
   }
+
+  function startAnimationWatcher() {
+    animationStartTime = performance.now();
+    requestAnimationFrame(checkAnimationFrame);
+  }
+
+function checkAnimationFrame() {
+  const elapsed = (performance.now() - animationStartTime) % boxAnimationDuration;
+
+  // Show text only when petals are closed (0–1.8s and 9.6–12s)
+  const isPetalsClosed = (elapsed <= 2500 || elapsed >= 10000);
+
+  if (isPetalsClosed) {
+    if (!happyMessage.classList.contains('visible')) {
+      happyMessage.classList.add('visible');
+    }
+  } else {
+    if (happyMessage.classList.contains('visible')) {
+      happyMessage.classList.remove('visible');
+    }
+  }
+
+  requestAnimationFrame(checkAnimationFrame);
+}
+
 </script>
 
 </body>
