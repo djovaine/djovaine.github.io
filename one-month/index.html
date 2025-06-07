@@ -1,95 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>3D Flower</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: #fff;
-      overflow: hidden;
-      font-family: sans-serif;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>3D Flower</title>
+<style>
+  /* ================= CSS hasil compile SCSS ================== */
+  :root {
+    --size: 10vmin;
+    --grad-size: calc(var(--size) / 3);
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  body {
+    background: hsl(0, 0%, 4%);
+    background-image:
+      linear-gradient(hsl(0, 0%, 6%) 1px, transparent 1px),
+      linear-gradient(to right, hsl(0, 0%, 6%) 1px, transparent 1px);
+    background-size: var(--grad-size) var(--grad-size);
+    font-family: Arial, sans-serif;
+  }
+
+  .range {
+    /* display: none; */
+    position: absolute;
+    z-index: 2;
+  }
+
+  .wrapper {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    margin: auto;
+    width: var(--size);
+    height: var(--size);
+    font-size: var(--size);
+    transform: rotateX(-45deg);
+    transform-style: preserve-3d;
+  }
+
+  .flower {
+    width: var(--size);
+    height: var(--size);
+    animation: rotate-flower 10s linear infinite;
+    transform-style: preserve-3d;
+    position: relative;
+  }
+
+  .flower:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 95%;
+    height: 95%;
+    top: 0; right: 0; bottom: 0; left: 0;
+    margin: auto;
+    background: hsl(100, 100%, 20%);
+    border-radius: 50%;
+    transform: rotateX(90deg);
+    animation: rotate-hue 5s infinite;
+  }
+
+  .petal {
+    position: absolute;
+    z-index: 20;
+    bottom: 80%;
+    left: calc(-1 * var(--size));
+    transform-style: preserve-3d;
+    transform-origin: bottom;
+  }
+
+  .box {
+    width: calc(var(--size) * 3);
+    transform-style: preserve-3d;
+    transform-origin: bottom;
+    animation: rotate-box 12s infinite;
+  }
+
+  .shape {
+    width: 0.5em;
+    height: 0.5em;
+    margin: auto;
+    background: currentColor;
+    box-shadow:
+      0.5em 0 0 0,
+      1em 0 0 0,
+      -1em 0 0 0,
+      -0.5em 0 0 0;
+    border-radius: 50%;
+    animation: rotate-hue 5s infinite;
+  }
+
+  @keyframes rotate-box {
+    0%   { transform: rotateX(3.5deg); }
+    15%  { transform: rotateX(3.5deg); }
+    50%  { transform: rotateX(-7deg); }
+    80%  { transform: rotateX(-7deg); }
+    100% { transform: rotateX(3.5deg); }
+  }
+
+  @keyframes rotate-flower {
+    100% {
+      transform: rotateY(360deg);
     }
-    #3d-flower {
-      width: 100vw;
-      height: 100vh;
-      display: block;
+  }
+
+  @keyframes rotate-hue {
+    100% {
+      filter: hue-rotate(360deg);
     }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <div id="3d-flower"></div>
 
-  <!-- Load libraries from CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/build/dat.gui.min.js"></script>
+<div class="wrapper">
+  <div class="flower"></div>
+</div>
 
-  <script>
-    (function(){
-      var camera, scene, renderer, plane, controls, spotLight, gui;
+<script>
+  console.clear();
 
-      scene = new THREE.Scene();
+  const doc = document;
+  const flower = doc.querySelector('.flower');
 
-      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.z = 150;
+  const maxParts = 20;
+  const maxPetals = 6;
+  const partsFontStep = 25 / maxParts;
+  const huetStep = 150 / maxParts;
 
-      spotLight = new THREE.SpotLight(0xffffff);
-      spotLight.position.set(0, 0, 500);
-      scene.add(spotLight);
+  createFlower();
 
-      // Geometry dan material plane (bunga)
-      var planeGeometry = new THREE.PlaneGeometry(50, 70);
+  function createFlower() {
+    const angle = 360 / maxPetals;
+    for(let i = 0; i < maxPetals; i++) {
+      const petal = createPetal();
+      const currAngle = angle * i + 'deg';
+      const transform = `transform: rotateY(${currAngle}) rotateX(-30deg) translateZ(9vmin)`;
+      petal.setAttribute('style', transform);
+      flower.appendChild(petal);
+    }
+  }
 
-      // Ganti URL ini dengan gambar bunga lain kalau mau
-      var textureLoader = new THREE.TextureLoader();
-      var texture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Water_lotus_flower_01.jpg/320px-Water_lotus_flower_01.jpg');
+  function createPetal() {
+    let box = createBox(null, 0);
 
-      var planeMaterial = new THREE.MeshLambertMaterial({
-        color: 0xffffff,
-        map: texture,
-        side: THREE.DoubleSide
-      });
+    const petal = doc.createElement('div');
+    petal.classList.add('petal');
 
-      plane = new THREE.Mesh(planeGeometry, planeMaterial);
-      scene.add(plane);
+    for(let i = 1; i <= maxParts; i++) {
+      const newBox = createBox(box, i);
+      box = newBox;
+    }
 
-      renderer = new THREE.WebGLRenderer({antialias: true});
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0));
+    petal.appendChild(box);
+    return petal;
+  }
 
-      $('#3d-flower').append(renderer.domElement);
+  function createBox(box, pos) {
+    let fontSize = partsFontStep * (maxParts - pos) + 'vmin';
+    const half = maxParts / 2;
+    let bright = 50;
 
-      controls = new function () {
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
-      };
+    if (pos < half + 1) {
+      fontSize = partsFontStep * pos + 'vmin';
+    } else {
+      bright = 10 + 40 / half * (maxParts - pos);
+    }
 
-      gui = new dat.GUI();
-      gui.add(controls, 'x', -100, 100).name('Position X');
-      gui.add(controls, 'y', -100, 100).name('Position Y');
-      gui.add(controls, 'z', -100, 100).name('Position Z');
+    const color = `hsl(${huetStep * pos}, 100%, ${bright}%)`;
 
-      function render() {
-        plane.position.x = controls.x;
-        plane.position.y = controls.y;
-        plane.position.z = controls.z;
+    // Create shape
+    const newShape = doc.createElement('div');
+    newShape.classList.add('shape');
 
-        requestAnimationFrame(render);
-        renderer.render(scene, camera);
-      }
+    // Create box wrapper
+    const newBox = doc.createElement('div');
+    newBox.classList.add('box');
+    newBox.style.color = color;
+    newBox.style.fontSize = fontSize;
 
-      render();
+    // Append old box into new box
+    if(box) newBox.appendChild(box);
 
-      // Responsif saat resize jendela
-      window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
+    // Append shape to new box
+    newBox.appendChild(newShape);
 
-    })();
-  </script>
+    return newBox;
+  }
+</script>
+
 </body>
 </html>
