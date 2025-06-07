@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>I LOVE YOU</title>
-  //Jovaine D Matteo
+<title>ILY</title>
 <style>
+  // Jovaine D Matteo
   :root {
     --size: 10vmin;
     --grad-size: calc(var(--size) / 3);
@@ -15,27 +15,32 @@
     height: 100%;
     overflow: hidden;
     margin: 0;
+  }
+
+  body {
     background: hsl(0, 0%, 4%);
     background-image:
       linear-gradient(hsl(0, 0%, 6%) 1px, transparent 1px),
       linear-gradient(to right, hsl(0, 0%, 6%) 1px, transparent 1px);
     background-size: var(--grad-size) var(--grad-size);
     font-family: Arial, sans-serif;
-    color: #9eea6a;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  }
+
+  .range {
+    /* display: none; */
+    position: absolute;
+    z-index: 2;
   }
 
   .wrapper {
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    margin: auto;
     width: var(--size);
     height: var(--size);
     font-size: var(--size);
     transform: rotateX(-45deg);
     transform-style: preserve-3d;
-    margin-bottom: 1.5em;
   }
 
   .flower {
@@ -108,13 +113,14 @@
     100% {
       filter: hue-rotate(360deg);
     }
-  }
 
-  .text-below {
+    .text-below {
     font-size: 4vmin;
     font-weight: bold;
     color: #9eea6a;
     text-shadow: 0 0 5px #6ab43a;
+    margin-top: 2rem; 
+}
   }
 </style>
 </head>
@@ -123,7 +129,7 @@
 <div class="wrapper">
   <div class="flower"></div>
 </div>
-<div class="text-below">Happy Mensive</div>
+  <div class="text-below">Happy Mensive</div>
 
 <script>
   console.clear();
@@ -177,16 +183,20 @@
 
     const color = `hsl(${huetStep * pos}, 100%, ${bright}%)`;
 
+    // Create shape
     const newShape = doc.createElement('div');
     newShape.classList.add('shape');
 
+    // Create box wrapper
     const newBox = doc.createElement('div');
     newBox.classList.add('box');
     newBox.style.color = color;
     newBox.style.fontSize = fontSize;
 
+    // Append old box into new box
     if(box) newBox.appendChild(box);
 
+    // Append shape to new box
     newBox.appendChild(newShape);
 
     return newBox;
