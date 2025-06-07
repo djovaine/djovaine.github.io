@@ -1,1 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>I LOVE YOU</title>
+  <style>
+    body {
+      background: #fff;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-family: sans-serif;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      background: #fff;
+    }
+    .caption {
+      margin-top: 15px;
+      font-size: 1.1em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="400" height="400"></canvas>
+  <div class="caption">Pola bunga dengan bentuk Taurus ♉️</div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    function drawTaurusShape() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(200, 200);
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#277BC0';
+
+      // Kepala U (badan banteng)
+      ctx.beginPath();
+      ctx.moveTo(-80, 60);
+      ctx.quadraticCurveTo(0, -60, 80, 60);
+      ctx.stroke();
+
+      // Tanduk kiri
+      ctx.beginPath();
+      ctx.moveTo(-80, 60);
+      ctx.bezierCurveTo(-130, 0, -110, -90, -40, -40);
+      ctx.stroke();
+
+      // Tanduk kanan
+      ctx.beginPath();
+      ctx.moveTo(80, 60);
+      ctx.bezierCurveTo(130, 0, 110, -90, 40, -40);
+      ctx.stroke();
+
+      // Mata kiri (lingkaran kecil)
+      ctx.beginPath();
+      ctx.fillStyle = '#E38B29';
+      ctx.arc(-30, 20, 8, 0, Math.PI * 2);
+      ct
 
