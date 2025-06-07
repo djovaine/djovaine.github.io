@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>I Love You Haedenn</title>
+<title>I Love You Haeden</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cardo&display=swap');
 
@@ -125,10 +125,13 @@
 </head>
 <body>
 
+  <div></div>
+  <div></div>
 <div class="wrapper">
   <div class="flower"></div>
 </div>
 <div class="happy-message" id="happyMessage">Happy Mensive</div>
+<div class="click-instruction">Klik di mana saja untuk memutar suara</div>
 
 <audio id="bgmusic" autoplay>
   <source src="song.mp3" type="audio/mpeg" />
@@ -232,12 +235,12 @@ function checkAnimationFrame() {
   requestAnimationFrame(checkAnimationFrame);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('click', () => {
     const music = document.getElementById('bgmusic');
     music.play().catch(error => {
       console.log('Audio tidak dapat diputar otomatis:', error);
     });
-  });
+  }, { once: true });
   
 </script>
 
