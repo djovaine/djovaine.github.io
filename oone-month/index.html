@@ -1,73 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bunga Banyak</title>
+  <meta charset="UTF-8">
+  <title>I Love you</title>
   <style>
     body {
       background: #fff;
       margin: 0;
-      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      height: 100vh;
     }
-
     canvas {
       border: 1px solid #ccc;
-      background: #fff;
     }
-
     .caption {
       margin-top: 20px;
       font-family: sans-serif;
+      color: #444;
       font-size: 1.2em;
-      color: #333;
     }
   </style>
 </head>
 <body>
   <canvas id="canvas" width="600" height="600"></canvas>
-  <div class="caption">Bunga banyak seperti Python Turtle 🌼</div>
+  <div class="caption">Bunga berkelopak jelas 🌺</div>
 
   <script>
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
-    let i = 0;
-    let angle = 0;
+    ctx.translate(300, 300); // pusat kanvas
+    ctx.lineWidth = 2;
 
-    function drawArc(radius, color) {
+    function drawFlower(petals, color, radius, scale) {
       ctx.beginPath();
+      for (let angle = 0; angle <= Math.PI * 2; angle += 0.01) {
+        let r = radius * Math.sin(petals * angle);
+        let x = r * Math.cos(angle) * scale;
+        let y = r * Math.sin(angle) * scale;
+        ctx.lineTo(x, y);
+      }
       ctx.strokeStyle = color;
-      ctx.arc(0, 0, radius, 0, Math.PI / 2); // 90 derajat
       ctx.stroke();
     }
 
-    function draw() {
-      if (i >= 180) return;
-
-      ctx.save();
-      ctx.translate(300, 300); // center
-      ctx.rotate(angle * Math.PI / 180);
-
-      let radius = 190 - i;
-      ctx.lineWidth = 1.5;
-
-      drawArc(radius, '#277BC0'); // blue arc
-      ctx.rotate(90 * Math.PI / 180);
-      drawArc(radius, '#E38B29'); // orange arc
-
-      ctx.restore();
-
-      angle += 18;
-      i++;
-      requestAnimationFrame(draw);
+    // Gambar banyak bunga berlapis
+    let layers = 5;
+    for (let i = 0; i < layers; i++) {
+      let scale = 1 - i * 0.15;
+      let petals = 6 + i * 2;
+      let color = i % 2 === 0 ? '#E38B29' : '#277BC0';
+      drawFlower(petals, color, 100, scale);
     }
-
-    draw();
   </script>
 </body>
 </html>
