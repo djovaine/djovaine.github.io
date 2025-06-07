@@ -1,3 +1,5 @@
+tambahkan song.mp3
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,12 +132,6 @@
 </div>
 <div class="happy-message" id="happyMessage">Happy Mensive</div>
 
-<!-- Menambahkan elemen audio dengan looping -->
-<audio controls loop>
-  <source src="song.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
-
 <script>
   console.clear();
 
@@ -216,23 +212,23 @@
     requestAnimationFrame(checkAnimationFrame);
   }
 
-  function checkAnimationFrame() {
-    const elapsed = (performance.now() - animationStartTime) % boxAnimationDuration;
+function checkAnimationFrame() {
+  const elapsed = (performance.now() - animationStartTime) % boxAnimationDuration;
 
-    const isPetalsClosed = (elapsed <= 2500 || elapsed >= 10000);
+  const isPetalsClosed = (elapsed <= 2500 || elapsed >= 10000);
 
-    if (isPetalsClosed) {
-      if (!happyMessage.classList.contains('visible')) {
-        happyMessage.classList.add('visible');
-      }
-    } else {
-      if (happyMessage.classList.contains('visible')) {
-        happyMessage.classList.remove('visible');
-      }
+  if (isPetalsClosed) {
+    if (!happyMessage.classList.contains('visible')) {
+      happyMessage.classList.add('visible');
     }
-
-    requestAnimationFrame(checkAnimationFrame);
+  } else {
+    if (happyMessage.classList.contains('visible')) {
+      happyMessage.classList.remove('visible');
+    }
   }
+
+  requestAnimationFrame(checkAnimationFrame);
+}
 
 </script>
 
