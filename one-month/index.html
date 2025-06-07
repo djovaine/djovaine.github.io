@@ -2,92 +2,94 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Logo Taurus Animasi</title>
+  <title>3D Flower</title>
   <style>
     body {
       margin: 0;
-      background: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background-color: #fff;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    #3d-flower {
+      width: 100vw;
       height: 100vh;
-      font-family: Arial, sans-serif;
-      flex-direction: column;
-    }
-    canvas {
-      border: 1px solid #ddd;
-      background: #f9f9f9;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 8px;
-    }
-    .caption {
-      margin-top: 15px;
-      font-size: 1.2em;
-      color: #333;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <canvas id="canvas" width="400" height="400"></canvas>
-  <div class="caption">Logo Taurus Animasi ♉️</div>
+  <div id="3d-flower"></div>
+
+  <!-- Load libraries from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/build/dat.gui.min.js"></script>
 
   <script>
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
+    (function(){
+      var camera, scene, renderer, plane, controls, spotLight, gui;
 
-    function drawTaurus() {
-      ctx.lineWidth = 5;
-      ctx.strokeStyle = '#2C3E50';
-      ctx.fillStyle = '#E67E22';
+      scene = new THREE.Scene();
 
-      ctx.beginPath();
-      // Kepala huruf U
-      ctx.moveTo(centerX - 80, centerY + 50);
-      ctx.quadraticCurveTo(centerX, centerY - 80, centerX + 80, centerY + 50);
-      ctx.stroke();
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
+      camera.position.z = 150;
 
-      // Tanduk kiri
-      ctx.beginPath();
-      ctx.moveTo(centerX - 80, centerY + 50);
-      ctx.bezierCurveTo(centerX - 130, centerY + 10, centerX - 120, centerY - 100, centerX - 40, centerY - 40);
-      ctx.stroke();
+      spotLight = new THREE.SpotLight(0xffffff);
+      spotLight.position.set(0, 0, 500);
+      scene.add(spotLight);
 
-      // Tanduk kanan
-      ctx.beginPath();
-      ctx.moveTo(centerX + 80, centerY + 50);
-      ctx.bezierCurveTo(centerX + 130, centerY + 10, centerX + 120, centerY - 100, centerX + 40, centerY - 40);
-      ctx.stroke();
+      // Geometry dan material plane (bunga)
+      var planeGeometry = new THREE.PlaneGeometry(50, 70);
 
-      // Mata kiri
-      ctx.beginPath();
-      ctx.arc(centerX - 30, centerY + 20, 10, 0, Math.PI * 2);
-      ctx.fill();
+      // Ganti URL ini dengan gambar bunga lain kalau mau
+      var textureLoader = new THREE.TextureLoader();
+      var texture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Water_lotus_flower_01.jpg/320px-Water_lotus_flower_01.jpg');
 
-      // Mata kanan
-      ctx.beginPath();
-      ctx.arc(centerX + 30, centerY + 20, 10, 0, Math.PI * 2);
-      ctx.fill();
-    }
+      var planeMaterial = new THREE.MeshLambertMaterial({
+        color: 0xffffff,
+        map: texture,
+        side: THREE.DoubleSide
+      });
 
-    let rotation = 0;
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.save();
-      ctx.translate(centerX, centerY);
-      ctx.rotate(rotation);
-      ctx.translate(-centerX, -centerY);
+      plane = new THREE.Mesh(planeGeometry, planeMaterial);
+      scene.add(plane);
 
-      drawTaurus();
+      renderer = new THREE.WebGLRenderer({antialias: true});
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0));
 
-      ctx.restore();
+      $('#3d-flower').append(renderer.domElement);
 
-      rotation += 0.01; // kecepatan putar
-      requestAnimationFrame(animate);
-    }
+      controls = new function () {
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+      };
 
-    animate();
+      gui = new dat.GUI();
+      gui.add(controls, 'x', -100, 100).name('Position X');
+      gui.add(controls, 'y', -100, 100).name('Position Y');
+      gui.add(controls, 'z', -100, 100).name('Position Z');
+
+      function render() {
+        plane.position.x = controls.x;
+        plane.position.y = controls.y;
+        plane.position.z = controls.z;
+
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+      }
+
+      render();
+
+      // Responsif saat resize jendela
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+    })();
   </script>
 </body>
 </html>
